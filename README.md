@@ -22,3 +22,8 @@ Un administrador puede aprobar o rechazar solicitudes.
    .venv\Scripts\activate   # En Windows
    source .venv/bin/activate # En Linux/Mac
    pip install -r requirements.txt
+3. Ejecutar:
+    python app.py
+4. Acceder a:
+    http://127.0.0.1:5007
+    
