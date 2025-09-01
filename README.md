@@ -7,7 +7,7 @@
 # Microservicio de Solicitudes
 
 ## Descripción
-Este microservicio permite **gestionar las solicitudes de nuevos lugares** que serán mostrados en el microservicio de **Mapas**.  
+Este microservicio permite **gestionar las solicitudes de nuevos lugares** que serán mostrados en el microservicio de **Lugar**.  
 Un administrador puede aprobar o rechazar solicitudes.
 
 ## Tecnologías
