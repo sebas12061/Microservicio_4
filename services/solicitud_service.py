@@ -1,26 +1,23 @@
-from repositories.solicitud_repository import solicitudes, contador_id
-from models.solicitud import Solicitud
+from repositories.solicitud_repository import SolicitudRepository
 
-def listar_solicitudes():
-    return [s.to_dict() for s in solicitudes]
+class SolicitudService:
+    def __init__(self):
+        self.repo = SolicitudRepository()
 
-def crear_solicitud(data):
-    global contador_id
-    nueva = Solicitud(contador_id, data["nombre"], data["categoria"], data["ubicacion"])
-    solicitudes.append(nueva)
-    contador_id += 1
-    return nueva.to_dict()
+    def listar(self):
+        return self.repo.obtener_todas()
 
-def aprobar_solicitud(id):
-    for s in solicitudes:
-        if s.id == id and s.estado == "pendiente":
-            s.estado = "aceptada"
-            return s.to_dict()
-    return None
+    def buscar_por_id(self, id):
+        return self.repo.obtener_por_id(id)
 
-def rechazar_solicitud(id):
-    for s in solicitudes:
-        if s.id == id and s.estado == "pendiente":
-            s.estado = "rechazada"
-            return s.to_dict()
-    return None
+    def crear(self, data):
+        return self.repo.crear(data)
+
+    def aprobar(self, id):
+        return self.repo.actualizar_estado(id, "aceptada")
+
+    def rechazar(self, id):
+        return self.repo.actualizar_estado(id, "rechazada")
+
+    def eliminar(self, id):
+        return self.repo.eliminar(id)
