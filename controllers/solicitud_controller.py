@@ -21,19 +21,45 @@ def obtener_por_id(id):
 @solicitud_bp.route("/", methods=["POST"])
 def crear():
     data = request.get_json()
+    if not data or "nombre" not in data or "categoria" not in data or "ubicacion" not in data:
+        return jsonify({"error": "Datos inválidos"}), 400
     return jsonify(service.crear(data)), 201
 
+# Listar solicitudes pendientes
+@solicitud_bp.route("/pendientes", methods=["GET"])
+def listar_pendientes():
+    return jsonify(service.pendientes()), 200
+    
 # Aprobar una solicitud
-@solicitud_bp.route("/<int:id>/aprobar", methods=["PUT"])
 def aprobar(id):
-    return jsonify(service.aprobar(id)), 200
+    resultado = service.aprobar(id)
+    if "error" in resultado:
+        return jsonify(resultado), 404
+    return jsonify(resultado), 200
 
 # Rechazar una solicitud
 @solicitud_bp.route("/<int:id>/rechazar", methods=["PUT"])
 def rechazar(id):
-    return jsonify(service.rechazar(id)), 200
+    resultado = service.rechazar(id)
+    if "error" in resultado:
+        return jsonify(resultado), 404
+    return jsonify(resultado), 200
+
+# Listar solicitudes aprobadas
+@solicitud_bp.route("/aprobadas", methods=["GET"])
+def listar_aprobadas():
+    return jsonify(service.aprobadas()), 200
+
+# Listar solicitudes rechazadas
+@solicitud_bp.route("/rechazadas", methods=["GET"])
+def listar_rechazadas():
+    return jsonify(service.rechazadas()), 200
+
 
 # Eliminar una solicitud
 @solicitud_bp.route("/<int:id>", methods=["DELETE"])
 def eliminar(id):
-    return jsonify(service.eliminar(id)), 200
+    resultado = service.eliminar(id)
+    if "error" in resultado:
+        return jsonify(resultado), 404
+    return jsonify(resultado), 200
