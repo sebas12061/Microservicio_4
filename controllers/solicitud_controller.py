@@ -9,7 +9,7 @@ service = SolicitudService()
 def listar():
     return jsonify(service.listar()), 200
 
-# Buscar por ID
+# Buscar solicitud por ID
 @solicitud_bp.route("/<int:id>", methods=["GET"])
 def obtener_por_id(id):
     solicitud = service.buscar_por_id(id)
