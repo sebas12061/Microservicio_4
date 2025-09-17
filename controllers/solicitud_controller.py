@@ -24,11 +24,6 @@ def crear():
     if not data or "nombre" not in data or "categoria" not in data or "ubicacion" not in data:
         return jsonify({"error": "Datos inválidos"}), 400
     return jsonify(service.crear(data)), 201
-
-# Listar solicitudes pendientes
-@solicitud_bp.route("/pendientes", methods=["GET"])
-def listar_pendientes():
-    return jsonify(service.pendientes()), 200
     
 # Aprobar una solicitud
 def aprobar(id):
@@ -45,16 +40,20 @@ def rechazar(id):
         return jsonify(resultado), 404
     return jsonify(resultado), 200
 
-# Listar solicitudes aprobadas
-@solicitud_bp.route("/aprobadas", methods=["GET"])
-def listar_aprobadas():
-    return jsonify(service.aprobadas()), 200
+# Listar solicitudes pendientes
+@solicitud_bp.route("/pendientes", methods=["GET"])
+def listar_pendientes():
+    return jsonify(service.pendientes()), 200
+
+# Listar solicitudes aceptadas
+@solicitud_bp.route("/aceptadas", methods=["GET"])
+def listar_aceptadas():
+    return jsonify(service.aceptadas()), 200
 
 # Listar solicitudes rechazadas
 @solicitud_bp.route("/rechazadas", methods=["GET"])
 def listar_rechazadas():
     return jsonify(service.rechazadas()), 200
-
 
 # Eliminar una solicitud
 @solicitud_bp.route("/<int:id>", methods=["DELETE"])

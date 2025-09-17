@@ -11,11 +11,9 @@ Eres un asistente que interpreta instrucciones en español sobre solicitudes.
 Debes devolver SIEMPRE un JSON válido con el siguiente formato:
 
 {{ "accion": "listar" }}
-{{ "accion": "aprobar" }}
-{{ "accion": "rechazar" }}
-{{ "accion": "obtener" }}
+{{ "accion": "obtener", "id": 3 }}
 {{ "accion": "pendientes" }}
-{{ "accion": "aprobadas" }}
+{{ "accion": "aceptadas" }}
 {{ "accion": "rechazadas" }}
 
 Instrucción: {instruccion}
@@ -37,24 +35,16 @@ def ejecutar_accion(accion: dict):
         if accion["accion"] == "listar":
             r = requests.get(BASE_URL)
             return r.json()
-
-        elif accion["accion"] == "aprobar":
-            r = requests.put(f"{BASE_URL}/{accion['id']}/aprobar")
-            return r.json()
-
-        elif accion["accion"] == "rechazar":
-            r = requests.put(f"{BASE_URL}/{accion['id']}/rechazar")
+        
+        if accion["accion"] == "aceptadas":
+            r = requests.get(f"{BASE_URL}/aceptadas")
             return r.json()
         
-        elif accion["accion"] == "aprobadas":
-            r = requests.get(f"{BASE_URL}/aprobadas")
-            return r.json()
-        
-        elif accion["accion"] == "rechazadas":
+        if accion["accion"] == "rechazadas":
             r = requests.get(f"{BASE_URL}/rechazadas")
             return r.json()
 
-        elif accion["accion"] == "obtener":
+        if accion["accion"] == "obtener":
             r = requests.get(f"{BASE_URL}/{accion['id']}")
             return r.json()
 
@@ -85,10 +75,13 @@ async def main():
             except json.JSONDecodeError:
                 if "pendiente" in instruccion.lower():
                     accion = {"accion": "pendientes"}
-                elif "aprobar" in instruccion.lower():
-                    accion = {"accion": "aprobar", "id": 1}
-                elif "rechazar" in instruccion.lower():
-                    accion = {"accion": "rechazar", "id": 1}
+                
+                elif "aceptadas" in instruccion.lower():
+                    accion = {"accion": "aceptadas"}
+                
+                elif "rechazadas" in instruccion.lower():
+                    accion = {"accion": "rechazadas"}
+                
                 else:
                     accion = {"accion": "listar"}
 

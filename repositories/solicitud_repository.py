@@ -2,6 +2,7 @@ from database import get_connection
 from models.solicitud import Solicitud
 
 class SolicitudRepository:
+    
     # Listar todas las solicitudes
     def obtener_todas(self):
         conn = get_connection()
@@ -30,15 +31,6 @@ class SolicitudRepository:
         conn.close()
         return {"mensaje": "Solicitud creada con éxito"}
     
-    # Listar solicitudes pendientes
-    def obtener_pendientes(self):
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM solicitudes WHERE estado = 'pendiente'")
-        rows = cursor.fetchall()
-        conn.close()
-        return [Solicitud(**row).to_dict() for row in rows]
-
     # Actualizar estado de una solicitud
     def actualizar_estado(self, id, nuevo_estado):
         conn = get_connection()
@@ -49,24 +41,15 @@ class SolicitudRepository:
         conn.close()
         return {"mensaje": f"Solicitud {nuevo_estado}"}
     
-    # Listar solicitudes aprobadas
-    def obtener_aprobadas(self):
+    # Obtener solicitudes por estado
+    def obtener_por_estado(self, estado):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM solicitudes WHERE estado = 'aceptada'")
+        cursor.execute("SELECT * FROM solicitudes WHERE estado = %s", (estado,))
         rows = cursor.fetchall()
         conn.close()
         return [Solicitud(**row).to_dict() for row in rows]
-
-    # Listar solicitudes rechazadas
-    def obtener_rechazadas(self):
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM solicitudes WHERE estado = 'rechazada'")
-        rows = cursor.fetchall()
-        conn.close()
-        return [Solicitud(**row).to_dict() for row in rows]
-
+    
     # Eliminar una solicitud
     def eliminar(self, id):
         conn = get_connection()

@@ -3,10 +3,7 @@ from repositories.solicitud_repository import SolicitudRepository
 class SolicitudService:
     def __init__(self):
         self.repo = SolicitudRepository()
-
-    # Listar solicitudes pendientes
-    def pendientes(self):
-        return self.repo.obtener_pendientes()
+    
     # Listar todas las solicitudes
     def listar(self):
         return self.repo.obtener_todas()
@@ -27,13 +24,17 @@ class SolicitudService:
     def rechazar(self, id):
         return self.repo.actualizar_estado(id, "rechazada")
     
+    # Listar solicitudes pendientes
+    def pendientes(self):
+        return self.repo.obtener_por_estado("pendiente")
+    
     # Listar solicitudes aprobadas
-    def aprobadas(self):
-        return self.repo.obtener_aprobadas()
+    def aceptadas(self):
+        return self.repo.obtener_por_estado("aceptada")
 
     # Listar solicitudes rechazadas
     def rechazadas(self):
-        return self.repo.obtener_rechazadas()
+        return self.repo.obtener_por_estado("rechazada")
 
     # Eliminar una solicitud
     def eliminar(self, id):
